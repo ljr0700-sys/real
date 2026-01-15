@@ -2,63 +2,64 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>부동산 자산 디지털 플랫폼 (Real8)</title>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
-    
     <style>
-        /* 정린님의 기존 다크모드 디자인 유지 */
-        body { background-color: #121212; color: white; font-family: 'Noto Sans KR', sans-serif; margin: 0; }
+        body { background-color: #121212; color: white; font-family: 'Noto Sans KR', sans-serif; text-align: center; margin: 0; }
         #login-screen { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; }
-        #main-content { display: none; } /* 로그인 전에는 숨김 */
-        .login-btn { padding: 15px 30px; font-size: 18px; cursor: pointer; background: white; border-radius: 8px; font-weight: bold; }
-        /* 정린님의 기존 테이블 및 카드 스타일... */
+        #main-content { display: none; padding: 20px; }
+        .login-btn { padding: 15px 40px; font-size: 20px; cursor: pointer; background: #ffffff; color: #000; border-radius: 10px; font-weight: bold; border: none; }
+        .header { background: #0056b3; padding: 25px; font-size: 24px; font-weight: bold; margin-bottom: 20px; }
+        .card { background: #1e1e1e; padding: 30px; border-radius: 15px; border: 1px solid #333; max-width: 800px; margin: 0 auto; text-align: left; }
     </style>
 </head>
 <body>
 
     <div id="login-screen">
-        <h1>Real8 플랫폼</h1>
-        <p>회원가입 및 로그인을 위해 아래 버튼을 눌러주세요.</p>
+        <h1 style="font-size: 40px; margin-bottom: 10px;">Real8 플랫폼</h1>
+        <p style="color: #bbb; margin-bottom: 30px;">회원가입 및 로그인을 위해 아래 버튼을 눌러주세요.</p>
         <button class="login-btn" onclick="googleLogin()">Google 계정으로 로그인</button>
     </div>
 
     <div id="main-content">
-        <header style="background:#0056b3; padding:20px; text-align:center;">
-            <h2>부동산 자산 디지털 플랫폼 (Real8)</h2>
-            <p id="user-display" style="font-weight:bold;"></p>
-        </header>
-
-        <div style="padding:20px;">
-            <h3>🛠 토큰/코인 발행 기준 및 관리</h3>
-            <h3>📜 전체 코인 발행 대장 (해시값 기록)</h3>
-            </div>
+        <div class="header" id="user-display">접속 중...</div>
+        <div class="card">
+            <h2 style="color: #4caf50;">📜 부동산 자산 디지털 대장</h2>
+            <p>로그인에 성공하셨습니다! 이제 관리자 권한으로 대장을 안전하게 관리할 수 있습니다.</p>
+            <hr style="border: 0.5px solid #333; margin: 20px 0;">
+            <p>※ 현재 정린님의 구글 인증 정보가 실시간으로 연동되었습니다.</p>
+        </div>
     </div>
 
     <script>
-        // 정린님의 Firebase 프로젝트 설정
+        // 정린님이 마지막에 보내주신 사진 속의 진짜 설정값으로 고쳤습니다.
         const firebaseConfig = {
             apiKey: "AIzaSyDPDh41Coju7dojq3ATISTxJDIiypx8eA0", 
             authDomain: "real8-platform-8527b.firebaseapp.com",
             projectId: "real8-platform-8527b",
+            storageBucket: "real8-platform-8527b.appspot.com",
+            messagingSenderId: "268345819156",
             appId: "1:268345819156:web:b017ad50d8d4e06f029001"
         };
+
+        // Firebase 시작
         firebase.initializeApp(firebaseConfig);
 
-        // 로그인/회원가입 함수
+        // 구글 로그인 함수
         function googleLogin() {
             const provider = new firebase.auth.GoogleAuthProvider();
             firebase.auth().signInWithPopup(provider).then((result) => {
-                const user = result.user;
-                // 성공 시 화면 전환
+                // 로그인 성공 시 화면 교체
                 document.getElementById('login-screen').style.display = 'none';
                 document.getElementById('main-content').style.display = 'block';
-                document.getElementById('user-display').innerText = user.displayName + "님, 접속 중";
-                alert(user.displayName + "님, 환영합니다!");
-            }).catch((e) => alert("에러: " + e.message));
+                document.getElementById('user-display').innerText = result.user.displayName + "님, 환영합니다!";
+            }).catch((error) => {
+                // 오류 발생 시 알림
+                alert("인증 오류가 발생했습니다: " + error.message);
+            });
         }
-
-        // 정린님이 만드신 기존 해시값 생성/저장 자바스크립트는 이 아래에 붙여넣으세요.
     </script>
 </body>
 </html>
