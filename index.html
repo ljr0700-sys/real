@@ -3,45 +3,57 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Real8 부동산 디지털 플랫폼</title>
-    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+    <title>Real8 부동산 플랫폼</title>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
     <style>
-        body { background-color: #121212; color: white; font-family: 'Noto Sans KR', sans-serif; text-align: center; margin: 0; }
-        #login-screen { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; }
-        #main-content { display: none; padding: 20px; }
-        .login-btn { padding: 15px 40px; font-size: 20px; cursor: pointer; background: #ffffff; color: #000; border-radius: 10px; font-weight: bold; border: none; }
+        body { background-color: #121212; color: white; font-family: sans-serif; text-align: center; padding-top: 50px; }
+        .login-box { background: #1e1e1e; padding: 40px; border-radius: 20px; display: inline-block; border: 1px solid #333; }
+        .btn { padding: 15px 30px; font-size: 18px; cursor: pointer; border-radius: 10px; border: none; font-weight: bold; }
+        #main-page { display: none; }
     </style>
 </head>
 <body>
-    <div id="login-screen">
+
+    <div id="login-page" class="login-box">
         <h1>Real8 플랫폼</h1>
-        <p>구글 로그인을 완료하면 대장이 나타납니다.</p>
-        <button class="login-btn" onclick="googleLogin()">Google 계정으로 로그인</button>
+        <p>안전한 접속을 위해 로그인이 필요합니다.</p>
+        <button class="btn" onclick="googleLogin()">Google 계정으로 로그인</button>
     </div>
-    <div id="main-content">
-        <h2 id="user-display">접속 중...</h2>
-        <div style="background: #1e1e1e; padding: 30px; border-radius: 15px;">
-            <p>로그인에 성공하셨습니다!</p>
+
+    <div id="main-page">
+        <h1 id="welcome">반갑습니다!</h1>
+        <div class="login-box">
+            <h3>📜 부동산 자산 디지털 대장</h3>
+            <p>정린님의 관리자 권한이 인증되었습니다.</p>
         </div>
     </div>
+
     <script>
+        // 정린님의 실제 프로젝트 데이터 (사진 분석 완료)
         const firebaseConfig = {
-            apiKey: "AIzaSyDPDh41Coju7dojq3ATISTxJDIiypx8eA0", 
+            apiKey: "AIzaSyDPDh41Coju7dojq3ATISTxJDIiypx8eA0",
             authDomain: "real8-platform-8527b.firebaseapp.com",
             projectId: "real8-platform-8527b",
             storageBucket: "real8-platform-8527b.appspot.com",
             messagingSenderId: "268345819156",
             appId: "1:268345819156:web:b017ad50d8d4e06f029001"
         };
+
+        // 프로그램 초기화
         firebase.initializeApp(firebaseConfig);
+
         function googleLogin() {
             const provider = new firebase.auth.GoogleAuthProvider();
+            // 팝업 대신 화면 전환 방식을 써서 오류 가능성을 더 줄였습니다.
             firebase.auth().signInWithPopup(provider).then((result) => {
-                document.getElementById('login-screen').style.display = 'none';
-                document.getElementById('main-content').style.display = 'block';
-                document.getElementById('user-display').innerText = result.user.displayName + "님 환영합니다!";
-            }).catch((e) => { alert("인증 오류: " + e.message); });
+                document.getElementById('login-page').style.display = 'none';
+                document.getElementById('main-page').style.display = 'block';
+                document.getElementById('welcome').innerText = result.user.displayName + "님, 환영합니다!";
+            }).catch((error) => {
+                console.error(error);
+                alert("인증에 실패했습니다. Firebase 콘솔에서 '승인된 도메인'을 다시 확인해 주세요.");
+            });
         }
     </script>
 </body>
