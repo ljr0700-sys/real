@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>부동산 자산 디지털 플랫폼 (Real8)</title>
+    <title>Real8 부동산 디지털 플랫폼</title>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
     <style>
@@ -12,29 +12,22 @@
         #main-content { display: none; padding: 20px; }
         .login-btn { padding: 15px 40px; font-size: 20px; cursor: pointer; background: #ffffff; color: #000; border-radius: 10px; font-weight: bold; border: none; }
         .header { background: #0056b3; padding: 25px; font-size: 24px; font-weight: bold; margin-bottom: 20px; }
-        .card { background: #1e1e1e; padding: 30px; border-radius: 15px; border: 1px solid #333; max-width: 800px; margin: 0 auto; text-align: left; }
     </style>
 </head>
 <body>
-
     <div id="login-screen">
-        <h1 style="font-size: 40px; margin-bottom: 10px;">Real8 플랫폼</h1>
-        <p style="color: #bbb; margin-bottom: 30px;">회원가입 및 로그인을 위해 아래 버튼을 눌러주세요.</p>
+        <h1>Real8 플랫폼</h1>
+        <p>회원가입 및 로그인을 위해 아래 버튼을 눌러주세요.</p>
         <button class="login-btn" onclick="googleLogin()">Google 계정으로 로그인</button>
     </div>
-
     <div id="main-content">
         <div class="header" id="user-display">접속 중...</div>
-        <div class="card">
+        <div style="background: #1e1e1e; padding: 30px; border-radius: 15px; border: 1px solid #333; max-width: 800px; margin: 0 auto; text-align: left;">
             <h2 style="color: #4caf50;">📜 부동산 자산 디지털 대장</h2>
-            <p>로그인에 성공하셨습니다! 이제 관리자 권한으로 대장을 안전하게 관리할 수 있습니다.</p>
-            <hr style="border: 0.5px solid #333; margin: 20px 0;">
-            <p>※ 현재 정린님의 구글 인증 정보가 실시간으로 연동되었습니다.</p>
+            <p>로그인에 성공하셨습니다! 이제 플랫폼 이용이 가능합니다.</p>
         </div>
     </div>
-
     <script>
-        // 정린님이 마지막에 보내주신 사진 속의 진짜 설정값으로 고쳤습니다.
         const firebaseConfig = {
             apiKey: "AIzaSyDPDh41Coju7dojq3ATISTxJDIiypx8eA0", 
             authDomain: "real8-platform-8527b.firebaseapp.com",
@@ -43,22 +36,14 @@
             messagingSenderId: "268345819156",
             appId: "1:268345819156:web:b017ad50d8d4e06f029001"
         };
-
-        // Firebase 시작
         firebase.initializeApp(firebaseConfig);
-
-        // 구글 로그인 함수
         function googleLogin() {
             const provider = new firebase.auth.GoogleAuthProvider();
             firebase.auth().signInWithPopup(provider).then((result) => {
-                // 로그인 성공 시 화면 교체
                 document.getElementById('login-screen').style.display = 'none';
                 document.getElementById('main-content').style.display = 'block';
                 document.getElementById('user-display').innerText = result.user.displayName + "님, 환영합니다!";
-            }).catch((error) => {
-                // 오류 발생 시 알림
-                alert("인증 오류가 발생했습니다: " + error.message);
-            });
+            }).catch((error) => { alert("인증 오류: " + error.message); });
         }
     </script>
 </body>
